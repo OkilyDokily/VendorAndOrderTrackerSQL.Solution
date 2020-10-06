@@ -1,0 +1,21 @@
+@using VendorAndOrderTracker.Models;
+@{
+  Layout = "_Layout";
+}
+
+<div>List of vendors</div>
+
+<ul>
+@foreach(Vendor vendor in @Model)
+{
+  <li><a href=@("/Vendor/" + vendor.Id + "/Order/")>@vendor.Name</a></li>
+}
+</ul>
+
+
+<div><a href="/Vendor/new">Add a new vendor</a></div>
+<div class="buttons">
+<form action=@("/Vendor/" + "delete" ) method="post">
+<button type="submit" class="btn btn-danger">Delete all vendors</button>
+</form>
+</div>

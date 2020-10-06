@@ -1,0 +1,19 @@
+@using VendorAndOrderTrackerSQL.Models
+
+@{
+  Layout = "_Layout";
+}
+
+<p>Search results are for descriptions of orders</p>
+@foreach(KeyValuePair<Vendor, List<Order>> entry in @Model)
+{
+  <h2>Orders within the @entry.Key.Name vendor</h2>
+  @foreach(Order order in entry.Value)
+  {
+    <div class="result">
+      <p>Order title: @order.Title</p>
+      <a href=@("/Vendor/" + entry.Key.Id + "/Order/" + order.Id)>Order description: @order.Description</a>  
+    </div>
+  
+  }  
+}

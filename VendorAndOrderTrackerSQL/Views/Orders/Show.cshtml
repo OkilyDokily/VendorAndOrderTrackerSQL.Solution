@@ -1,0 +1,18 @@
+@{
+  Layout = "_Layout";
+}
+
+
+<h4>Title:@Model.Title</h4>
+<h4>Description:@Model.Description</h4>
+<h4>Price:@Model.Price</h4>
+<h4>Date:@Model.Date</h4>
+
+<div class="buttons">
+  <form action=@("/Vendor/" + ViewContext.RouteData.Values["id"] + "/Order/" + ViewContext.RouteData.Values["num"] + "/delete" ) method="post">
+  <button type="submit" class="btn btn-danger">Delete</button>
+  </form>
+  <form action=@("/Vendor/" + ViewContext.RouteData.Values["id"] + "/Order/" + ViewContext.RouteData.Values["num"] + "/edit" ) method="get">
+  <button type="submit" class="btn btn-success">Edit</button>
+  </form>
+</div>

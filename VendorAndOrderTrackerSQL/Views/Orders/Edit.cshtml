@@ -1,0 +1,23 @@
+@{
+  Layout = "_Layout";
+}
+
+
+<h3>Edit an order</h3>
+
+<form action=@("/Vendor/" + ViewContext.RouteData.Values["id"] + "/Order/" + ViewContext.RouteData.Values["num"]) method="post">
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input type="text" id="title" name="title" value="@Model.Title" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="description">Description</label>
+    <input type="text" name="description" id="description" value="@Model.Description" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="price">Price</label>
+    <input type="number" step="0.01" name="price" id="price" value="@Model.Price" class="form-control">
+  </div>
+ 
+  <button type="submit" class="btn btn-success">Update</button>
+</form>
