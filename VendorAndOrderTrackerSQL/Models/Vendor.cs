@@ -1,99 +1,164 @@
 using System.Collections.Generic;
 using System.Linq;
+using System;
+using MySql.Data.MySqlClient;
 
 namespace VendorAndOrderTrackerSQL.Models
 {
   public class Vendor
   {
-    private static List<Vendor> _vendors = new List<Vendor>();
-    public static int CurrentID { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
     public int Id { get; set; }
-    private List<Order> _orders = new List<Order>();
+
+    public Vendor(string name, string description, int id)
+    {
+      Name = name;
+      Description = description;
+      Id = id;
+    }
 
     public Vendor(string name, string description)
     {
-      Id = CurrentID;
-      
       Name = name;
       Description = description;
-      _vendors.Add(this);
-      CurrentID++;
+      Save();
     }
 
     public override bool Equals(object obj)
     {
-      Vendor vendor = (Vendor) obj;
-      return (this.Description == vendor.Description && this.Name == vendor.Name);
-    }
-
-    public static List<Vendor> GetVendors()
-    {
-      return _vendors;
+      Vendor vendor = (Vendor)obj;
+      return (this.Description == vendor.Description && this.Name == vendor.Name && this.Id == vendor.Id);
     }
 
     public static void ClearVendors()
     {
-      _vendors.Clear();
-    }
-
-    public static void DeleteVendor(int id)
-    {
-      _vendors.Remove(Vendor.GetVendors().Single(x => x.Id == id));
-    }
-
-    public static Dictionary<Vendor, List<Order>> SearchOrders(string query)
-    {
-
-      Dictionary<Vendor, List<Order>> matches = new Dictionary<Vendor, List<Order>>();
-      foreach (Vendor vendor in _vendors)
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM vendors;";
+      cmd.ExecuteNonQuery();
+      conn.Close();
+      if (conn != null)
       {
-        Dictionary<Order, int> d = new Dictionary<Order, int>();
-        foreach (Order order in vendor._orders)
-        {
-          if (order.Description.Contains(query))
-          {
-            try
-            {
-              var match = matches[vendor];
-              matches[vendor].Add(order);
-            }
-            catch
-            {
-              matches[vendor] = new List<Order>();
-              matches[vendor].Add(order);
-            }
-          }
-        };
-      };
-
-      return matches;
+        conn.Dispose();
+      }
     }
 
-    public List<Order> GetOrders()
+    private void Save()
     {
-        return _orders;
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.Parameters.AddWithValue("@VendorDescription", this.Description);
+      cmd.Parameters.AddWithValue("@VendorName", this.Name);
+      cmd.CommandText = @"INSERT INTO vendors (name, description) VALUES (@VendorName, @VendorDescription);";
+      cmd.ExecuteNonQuery();
+      Id = (int)cmd.LastInsertedId;
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
     }
 
     public static Vendor FindVendor(int id)
     {
-      return _vendors.Find(x => x.Id == id);
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.Parameters.AddWithValue("@Id", id);
+      cmd.CommandText = @"SELECT * FROM vendors WHERE id = @Id;";
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      int vendorid = 0;
+
+      string name = "";
+      string description = "";
+      while (rdr.Read())
+      {
+        vendorid = rdr.GetInt32(0);
+        name = rdr.GetString(1);
+        description = rdr.GetString(2);
+      }
+
+      Vendor vendor = new Vendor(name, description, vendorid);
+      conn.Close();
+
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return vendor;
     }
 
-    public Order FindOrder(int id)
+    public static List<Vendor> GetVendors()
     {
-      return _orders.Find(x => x.Id == id);
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * FROM vendors;";
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      List<Vendor> results = new List<Vendor>();
+      while (rdr.Read())
+      {
+        int vendorid = 0;
+        string name = "";
+        string description = "";
+        vendorid = rdr.GetInt32(0);
+        Console.WriteLine(vendorid);
+        name = rdr.GetString(1);
+        description = rdr.GetString(2);
+
+        results.Add(new Vendor(name, description, vendorid));
+      }
+
+      return results;
     }
 
-    public void DeleteOrders()
+    public static void DeleteVendor(int id)
     {
-      _orders.Clear();
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.Parameters.AddWithValue("@Id", id);
+      cmd.CommandText = @"DELETE FROM vendors  WHERE id = @Id;";
+      cmd.ExecuteNonQuery();
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
     }
 
-    public void DeleteAnOrder(int id)
-    {
-      _orders.Remove(_orders.Single(x => x.Id == id));
-    }
+    // public static Dictionary<Vendor, List<Order>> SearchOrders(string query)
+    // {
+
+    //   Dictionary<Vendor, List<Order>> matches = new Dictionary<Vendor, List<Order>>();
+    //   foreach (Vendor vendor in _vendors)
+    //   {
+    //     Dictionary<Order, int> d = new Dictionary<Order, int>();
+    //     foreach (Order order in vendor._orders)
+    //     {
+    //       if (order.Description.Contains(query))
+    //       {
+    //         try
+    //         {
+    //           var match = matches[vendor];
+    //           matches[vendor].Add(order);
+    //         }
+    //         catch
+    //         {
+    //           matches[vendor] = new List<Order>();
+    //           matches[vendor].Add(order);
+    //         }
+    //       }
+    //     };
+    //   };
+
+    //   return matches;
+    // }
+
+
+
   }
 }
