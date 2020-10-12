@@ -11,7 +11,6 @@ namespace VendorAndOrderTrackerSQL.Controllers
       return View(Vendor.GetVendors());
     }
 
-
     [HttpGet("/Vendor/{id}/edit")]
     public ActionResult Edit(int id)
     {
@@ -35,7 +34,6 @@ namespace VendorAndOrderTrackerSQL.Controllers
       Vendor.DeleteVendor(id);
       return RedirectToAction("Index");
     }
-
 
     [HttpPost("/Vendor/delete")]
     public ActionResult DeleteAll(int id)

@@ -175,11 +175,7 @@ namespace VendorAndOrderTrackerSQL.Models
           }
         };
       };
-
       return matches;
     }
-
-
-
   }
 }

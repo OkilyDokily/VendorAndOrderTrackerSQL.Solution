@@ -6,7 +6,6 @@ namespace VendorAndOrderTrackerSQL.Controllers
 {
   public class OrdersController : Controller
   {
-
     [HttpGet("/Vendor/{id}/Order/")]
     public ActionResult Index(int id)
     {
@@ -55,9 +54,7 @@ namespace VendorAndOrderTrackerSQL.Controllers
     [HttpPost("/Vendor/{id}/Order/{num}/")]
     public ActionResult Update(string title, string description, double price, int num)
     {
-
       Order order = Order.FindOrder(num);
-
       order.Title = title;
       order.Description = description;
       order.Price = price;

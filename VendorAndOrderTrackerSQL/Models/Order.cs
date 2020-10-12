@@ -22,7 +22,6 @@ namespace VendorAndOrderTrackerSQL.Models
       Price = price;
       Save();
     }
-
     public Order(int id, string title, string description, double price, DateTime date, int vendorid)
     {
       Id = id;
@@ -38,7 +37,6 @@ namespace VendorAndOrderTrackerSQL.Models
       Order order = (Order)obj;
       return (this.Description == order.Description && this.Title == order.Title && this.Id == order.Id && this.Price == order.Price && this.VendorId == order.VendorId);
     }
-
     public static void ClearOrdersFromVendorById(int id)
     {
       MySqlConnection conn = DB.Connection();
@@ -53,7 +51,6 @@ namespace VendorAndOrderTrackerSQL.Models
         conn.Dispose();
       }
     }
-
     public static void ClearOrders()
     {
       MySqlConnection conn = DB.Connection();
@@ -67,7 +64,6 @@ namespace VendorAndOrderTrackerSQL.Models
         conn.Dispose();
       }
     }
-
     private void Save()
     {
       MySqlConnection conn = DB.Connection();
@@ -90,7 +86,6 @@ namespace VendorAndOrderTrackerSQL.Models
         conn.Dispose();
       }
     }
-
     public void Update()
     {
       MySqlConnection conn = DB.Connection();
@@ -110,7 +105,6 @@ namespace VendorAndOrderTrackerSQL.Models
         conn.Dispose();
       }
     }
-
     public static Order FindOrder(int id)
     {
       MySqlConnection conn = DB.Connection();
@@ -135,7 +129,6 @@ namespace VendorAndOrderTrackerSQL.Models
         date = rdr.GetDateTime(4);
         vendorid = rdr.GetInt32(5);
       }
-
       Order order = new Order(orderid, title, description, price, date, vendorid);
       conn.Close();
 
@@ -145,7 +138,6 @@ namespace VendorAndOrderTrackerSQL.Models
       }
       return order;
     }
-
     public static void DeleteAnOrder(int id)
     {
       MySqlConnection conn = DB.Connection();
@@ -160,7 +152,6 @@ namespace VendorAndOrderTrackerSQL.Models
         conn.Dispose();
       }
     }
-
     public static List<Order> GetOrdersForVendorById(int id)
     {
       MySqlConnection conn = DB.Connection();

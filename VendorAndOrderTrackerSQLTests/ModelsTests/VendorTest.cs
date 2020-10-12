@@ -13,7 +13,6 @@ namespace VendorAndOrderTrackerTestsSQL.ModelsTests
     {
       Vendor.ClearVendors();
     }
-
     public VendorTest()
     {
       DBConfiguration.ConnectionString = "server=localhost;user id=root;password=epicodus;port=3306;database=vendor_and_order_tracker_sql_test;";
@@ -24,8 +23,7 @@ namespace VendorAndOrderTrackerTestsSQL.ModelsTests
     {
       new Vendor("Pizza Hut", "A fine pizza place");
       new Vendor("Pizza Hut", "A fine pizza place");
-
-      //Assert.AreEqual(Vendor.GetVendors()[0].Description, "A fine pizza place");
+      
       Assert.AreEqual(Vendor.GetVendors()[0].Description, "A fine pizza place");
       Assert.AreEqual(2, Vendor.GetVendors().Count);
     }
@@ -73,26 +71,6 @@ namespace VendorAndOrderTrackerTestsSQL.ModelsTests
       Assert.AreEqual("A fine food establishment", vendor.Description);
       Assert.AreEqual(1, Vendor.GetVendors().Count);
     }
-
-    // [TestMethod]
-    // public void SearchOrders_EnsureThatSearchListIsCorrect_ReturnTrue()
-    // {
-    //   Vendor vendor = new Vendor("Taco Bell", "A fine taco establishment");
-    //   new Order("Taco", "A crunchy treat with ground beef and lettuce", 1.99, vendor);
-    //   new Order("Burrito", "A chewy treat with ground beef and red sauce", .99, vendor);
-    //   Vendor vendor2 = new Vendor("Pizza Hut", "A fine pizza establishment");
-    //   new Order("Hamburger Pizza", "A tempting ground beef pizza wonder.", 6.99, vendor2);
-
-    //   Dictionary<Vendor, List<Order>> result = Vendor.SearchOrders("beef");
-    //   Dictionary<Vendor, List<Order>> result2 = Vendor.SearchOrders("treat");
-
-    //   Assert.AreEqual(2, result.Count);
-    //   Assert.AreEqual(2, result[vendor].Count);
-    //   Assert.AreEqual(1, result[vendor2].Count);
-
-    //   Assert.AreEqual(1, result2.Count);
-    //   Assert.AreEqual(2, result2[vendor].Count);
-    // }
     
     [TestMethod]
     public void GetVendors_EnsureVendorsAreFound_ReturnsTrue()
@@ -106,7 +84,6 @@ namespace VendorAndOrderTrackerTestsSQL.ModelsTests
       CollectionAssert.AreEqual(eList, aList);
     }
 
-
     [TestMethod]
     public void FindVendor_EnsureSingleVendorIsFound_ReturnsTrue()
     {
@@ -117,6 +94,5 @@ namespace VendorAndOrderTrackerTestsSQL.ModelsTests
       Vendor aVendor = Vendor.FindVendor(eVendor.Id);
       Assert.AreEqual(eVendor.Id, aVendor.Id);
     }
-    
   }
 }
