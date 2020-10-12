@@ -122,7 +122,6 @@ namespace VendorAndOrderTrackerSQL.Models
       while (rdr.Read())
       {
         orderid = rdr.GetInt32(0);
-        Console.WriteLine(orderid);
         title = rdr.GetString(1);
         description = rdr.GetString(2);
         price = rdr.GetDouble(3);

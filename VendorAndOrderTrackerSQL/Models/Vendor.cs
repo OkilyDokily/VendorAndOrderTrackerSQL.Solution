@@ -126,7 +126,6 @@ namespace VendorAndOrderTrackerSQL.Models
         string name = "";
         string description = "";
         vendorid = rdr.GetInt32(0);
-        Console.WriteLine(vendorid);
         name = rdr.GetString(1);
         description = rdr.GetString(2);
 
