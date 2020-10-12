@@ -62,6 +62,27 @@ namespace VendorAndOrderTrackerSQL.Models
       }
     }
 
+
+    public void Update()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"UPDATE vendors SET name = @VendorName, description = @VendorDescription WHERE id = @VendorId;";
+
+      cmd.Parameters.AddWithValue("@VendorId", this.Id);
+      cmd.Parameters.AddWithValue("@VendorDescription", this.Description);
+      cmd.Parameters.AddWithValue("@VendorName", this.Name);
+
+      cmd.ExecuteNonQuery();
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+
     public static Vendor FindVendor(int id)
     {
       MySqlConnection conn = DB.Connection();
@@ -130,33 +151,33 @@ namespace VendorAndOrderTrackerSQL.Models
       }
     }
 
-    // public static Dictionary<Vendor, List<Order>> SearchOrders(string query)
-    // {
+    public static Dictionary<Vendor, List<Order>> SearchOrders(string query)
+    {
 
-    //   Dictionary<Vendor, List<Order>> matches = new Dictionary<Vendor, List<Order>>();
-    //   foreach (Vendor vendor in _vendors)
-    //   {
-    //     Dictionary<Order, int> d = new Dictionary<Order, int>();
-    //     foreach (Order order in vendor._orders)
-    //     {
-    //       if (order.Description.Contains(query))
-    //       {
-    //         try
-    //         {
-    //           var match = matches[vendor];
-    //           matches[vendor].Add(order);
-    //         }
-    //         catch
-    //         {
-    //           matches[vendor] = new List<Order>();
-    //           matches[vendor].Add(order);
-    //         }
-    //       }
-    //     };
-    //   };
+      Dictionary<Vendor, List<Order>> matches = new Dictionary<Vendor, List<Order>>();
+      foreach (Vendor vendor in Vendor.GetVendors())
+      {
+        Dictionary<Order, int> d = new Dictionary<Order, int>();
+        foreach (Order order in Order.GetOrdersForVendorById(vendor.Id))
+        {
+          if (order.Description.Contains(query))
+          {
+            try
+            {
+              var match = matches[vendor];
+              matches[vendor].Add(order);
+            }
+            catch
+            {
+              matches[vendor] = new List<Order>();
+              matches[vendor].Add(order);
+            }
+          }
+        };
+      };
 
-    //   return matches;
-    // }
+      return matches;
+    }
 
 
 

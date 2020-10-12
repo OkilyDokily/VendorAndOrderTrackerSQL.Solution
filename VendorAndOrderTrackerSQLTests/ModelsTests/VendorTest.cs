@@ -115,7 +115,7 @@ namespace VendorAndOrderTrackerTestsSQL.ModelsTests
       Vendor eVendor = new Vendor("Pizza Hut", "A fine pizza establishment");
       //act
       Vendor aVendor = Vendor.FindVendor(eVendor.Id);
-      Assert.AreEqual(eVendor, aVendor);
+      Assert.AreEqual(eVendor.Id, aVendor.Id);
     }
     
   }

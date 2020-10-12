@@ -1,19 +1,21 @@
 @using VendorAndOrderTrackerSQL.Models;
+@using System.Collections.Generic;
 
 @{
   Layout = "_Layout";
 }
- 
-<h2>Name: @Model.Name</h2>
-<h4>Description: @Model.Description</h4>
+@foreach(KeyValuePair<Vendor, List<Order>> item in @Model){
+  <h2>Name: @item.Key.Name</h2>
+  <h4>Description: @item.Key.Description</h4>
 
-<h3>Orders for this vendor</h3>
-<ul>
-@foreach (Order item in Model.GetOrders())
-{
-    <li><a href=@("/Vendor/" +ViewContext.RouteData.Values["id"] + "/Order/" + item.Id)>@item.Title</a></li>
-}
+  <h3>Orders for this vendor</h3>
+  <ul>
+  @foreach (Order order in item.Value)
+  {
+    <li><a href=@("/Vendor/" +ViewContext.RouteData.Values["id"] + "/Order/" + order.Id)>@order.Title</a></li>
+  }
 </ul>
+}
 
 <div><a href=@("/Vendor/" +  ViewContext.RouteData.Values["id"] + "/Order/new" )>Add an order to this vendor</a></div>
 <div><a href=@("/Vendor/" +  ViewContext.RouteData.Values["id"] + "/edit" )>Edit this vendor</a></div>
